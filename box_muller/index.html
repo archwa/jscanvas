@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      border: 0;
+      overflow: hidden; /*  Disable scrollbars */
+      display: block;  /* No floating content on sides */
+    }
+  </style>
   <script type="text/javascript">
     "use strict";
 
@@ -40,23 +50,29 @@
 
     function init_canvas() {
       canvas = document.createElement("canvas");
-      canvas.width = 800;
-      canvas.height = 600;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
       canvas.tabindex = 0;
-      canvas.setAttribute("style", "position: absolute;"
-                                  + "left: 50%;"
+      canvas.setAttribute("style", "width: 100%; height: 100%; margin: 0;");
+                                  /*+ "left: 0; top: 0;");
                                   + "margin-left:-400px;"
                                   + "top: 50%;"
                                   + "margin-top:-300px;"
                                   + "border: 1px solid black;"
-                         );
+                         );*/
       ctx = canvas.getContext("2d");
       document.body.appendChild(canvas);
-      //document.addEventListener('keydown', doKeyDown, true);
+      document.addEventListener("keydown", () => dot_list = [], true);
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
 
     // initialization
     function init() {
+       window.addEventListener("resize", resizeCanvas, false);
       init_canvas();
       init_ticks();
       init_ball();
@@ -84,7 +100,7 @@
 
       const elapsed = time - last;
 
-      const interval = 100;
+      const interval = 1000;
       draw(elapsed / interval);
 
       if(elapsed && elapsed >= interval) {
